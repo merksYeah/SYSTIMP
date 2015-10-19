@@ -50,7 +50,7 @@ public class FilterSalesOrders extends HttpServlet {
             emp.setUserId(rights.get("userId"));
             emp = db3.getEmployeeById(emp);
             Customer cs = new Customer();
-            cs.setCustomerTin(Integer.parseInt(request.getParameter("inlineRadioOptions")));
+            cs.setCustomerTin(1);
             SalesOrder so = new SalesOrder();
             so.setStatusCode("");
             SalesOrderDAO db2 = db.getSalesOrderDAO();

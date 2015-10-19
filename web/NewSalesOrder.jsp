@@ -104,14 +104,14 @@
                                                         <hr>
                                                             <thead>
                                                                 <tr>
-                                                                    <th></th>
-                                                                    <th></th>
-                                                                    <th><i class="fa fa-barcode"></i> ProductCode</th>
+                                                                    <th>Choose Product</th>
+                                                                    <th>Quantity Ordered</th>
+                                                                   
                                                                     <th class="hidden-phone"><i class="fa fa-question-circle"></i> Product Name</th>
                                                                     <th class="hidden-phone"><i class="fa fa-question-circle"></i> Package Type</th>
                                                                     <th class="hidden-phone"><i class="fa fa-question-circle"></i> Net Weight</th>
                                                                     <th><i class="fa fa-bookmark"></i> Quantity In Stock</th>
-                                                                    <th><i class=" fa fa-edit"></i> Unit Price</th>
+                                                                   
                                                                 </tr>
                                                             </thead>
                                                             
@@ -120,12 +120,12 @@
                                                                     <tr>
                                                                         <td><input type="checkbox" name="checkedRows" value="${product.productCode}" onclick="var input = document.getElementById('<c:out value="${status.count}" />'); if(this.checked){ input.disabled = false; input.focus();}else{input.disabled=true;}"></td>
                                                                         <td class="quantity"><input type="number" name="orderquantity" id = "<c:out value="${status.count}" />"disabled/></td>
-                                                                        <td><c:out value="${product.productCode}"/></td> 
+                                                                   
                                                                         <td class="prodName"><c:out value="${product.productName}"/></td> 
                                                                         <td class="packageType"><c:out value="${product.packageType}"/></td> 
                                                                         <td><c:out value="${product.netweight}"/></td> 
                                                                         <td><c:out value="${product.quantity}"/></td>
-                                                                        <td><c:out value="${product.MSRP}"/></td>    
+                                                                        
                                                                     </tr>
                                                                 </c:forEach>
                                                             </tbody>
@@ -222,7 +222,8 @@
         "scrollY":        "300px",
         "scrollCollapse": true,
         "paginate" : false,
-        "bPaginate": false
+        "bPaginate": false,
+        "order":[[2,"asc"]]
        
     } );
     $('#submit').click(function(){

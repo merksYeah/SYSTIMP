@@ -76,9 +76,9 @@
                                                         <hr>
                                                             <thead>
                                                                 <tr>
-                                                                    <th></th>
-                                                                    <th></th>
-                                                                    <th><i class="fa fa-barcode"></i> ProductCode</th>
+                                                                    <th>Choose Product</th>
+                                                                    <th>Order Quantity</th>
+                                                                    
                                                                     <th class="hidden-phone"><i class="fa fa-question-circle"></i> Product Name</th>
                                                                     <th class="hidden-phone"><i class="fa fa-question-circle"></i> Package Type</th>
                                                                     <th class="hidden-phone"><i class="fa fa-question-circle"></i> Net Weight</th>
@@ -92,7 +92,7 @@
                                                                     <tr>
                                                                         <td><input type="checkbox" name="checkedRows" value="${product.productCode}" onclick="var input = document.getElementById('<c:out value="${status.count}" />'); if(this.checked){ input.disabled = false; input.focus();}else{input.disabled=true;}"></td>
                                                                         <td><input type="number" name="orderquantity" id = "<c:out value="${status.count}" />"disabled/></td>
-                                                                        <td><c:out value="${product.productCode}"/></td> 
+                                                                    
                                                                         <td><c:out value="${product.productName}"/></td> 
                                                                         <td><c:out value="${product.packageType}"/></td> 
                                                                         <td><c:out value="${product.netweight}"/></td> 
@@ -195,7 +195,8 @@
         "scrollY":        "300px",
         "scrollCollapse": true,
         "paginate" : false,
-        "bPaginate": false
+        "bPaginate": false,
+         "order":[[2,"asc"]]
        
     } );
 } );

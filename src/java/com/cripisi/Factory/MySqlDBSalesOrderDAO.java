@@ -40,7 +40,7 @@ public class MySqlDBSalesOrderDAO implements SalesOrderDAO{
     private static final String SQL_GET_SALESAGENT_ORDERS ="SELECT * FROM salesorder so\n" +
                                                             "join customer cs on cs.customerTin = so.customer_tin\n" +
                                                             "where EmployeeId = ?";
-    private static final String SQL_GET_ORDER_ORDERDETAILS ="SELECT productName,orderQuantity ,quantity FROM salesorder_has_product sp join product p on sp.productCode = p.productCode where SalesOrderId = ?";
+    private static final String SQL_GET_ORDER_ORDERDETAILS ="SELECT package,productName,orderQuantity ,quantity FROM salesorder_has_product sp join product p on sp.productCode = p.productCode where SalesOrderId = ?";
     private static final String SQL_GET_PRODUCT_SALES = "select * from productssoldpermonth\n" +
                                                         "where month = ? and year = ? LIMIT 8";
     private static final String SQL_GET_INPROCESS_ORDERS = "SELECT * from salesorder where statuscode = ?";
@@ -52,12 +52,13 @@ public class MySqlDBSalesOrderDAO implements SalesOrderDAO{
     private static final String SQL_UPDATE_PRICEMODEL = "update salesorder_has_product set priceEach = ? where salesorderid = ? and productCode = ?";
     private static final String SQL_GET_PRICEMODEL = "SELECT * FROM mydb.salesorder_has_product sp join product p on sp.productCode = p.productCode where salesorderid = ? group by sp.productCode";
     private static final String SQL_UPDATE_DELIVERYDATE = "update salesorder set statusCode = ?, order_date = ? where salesorderid = ?";
-    private static final String SQL_GET_AGENT_ORDERS = "Select s.date_delivered,s.deliver_to,cs.clientName,s.statusCode,s.salesOrderId, s.customer_tin, date_issued,order_date, IF(p.STOCKSTATUS > 0,'O','F') as stockStatus from salesorder s \n" +
+    private static final String SQL_GET_AGENT_ORDERS = "Select o.statusDesc, s.date_delivered,s.deliver_to,cs.clientName,s.statusCode,s.salesOrderId, s.customer_tin, date_issued,order_date, IF(p.STOCKSTATUS > 0,'O','F') as stockStatus from salesorder s \n" +
                                                         "left join(SELECT salesorderid, count(*) as STOCKSTATUS FROM mydb.salesorder_has_product sp \n" +
                                                         "join product p on sp.productCode = p.productCode\n" +
                                                         "where p.quantity <= sp.orderquantity group by salesorderid) p on s.SalesOrderId = p.salesorderid\n" +
+                                                         "join orderstatus o on o.statusCode = s.statusCode\n" +
                                                         "join customer cs on cs.customerTin = s.customer_tin\n" +
-                                                        "where customer_tin like ? and statusCode like ? and EmployeeId = ? order by s.salesorderid";
+                                                        "where customer_tin like ? and s.statusCode like ? and EmployeeId = ? order by s.salesorderid";
     private static final String SQL_GET_CURRENT_ORDERS = "SELECT * from salesorder s join orderstatus o on s.statusCode = o.statusCode where s.statuscode = ? and customer_tin = ? and DATE(date_issued) = DATE(NOW()) order by date_issued desc";
      private static final String SQL_GET_CURRENT_ORDERS_SALESAGENT = "SELECT * from salesorder s join orderstatus o on s.statusCode = o.statusCode join customer c on s.customer_tin = c.customerTin where s.statuscode = ? and employeeID = ? and DATE(date_issued) = DATE(NOW()) order by date_issued desc";
      private static final String SQL_GET_CURRENT_DELIVEREDORDERS = "SELECT * from salesorder s join orderstatus o on s.statusCode = o.statusCode where s.statuscode = ?  and customer_tin = ? and DATE(date_delivered) = DATE(NOW()) order by date_delivered desc";
@@ -288,6 +289,7 @@ public class MySqlDBSalesOrderDAO implements SalesOrderDAO{
                     two.setProductName(rs.getString("productName"));
                     two.setQuantity(rs.getInt("orderQuantity"));
                     two.setFulfilledQuantity(rs.getInt("quantity"));
+                    two.setPackageType(rs.getString("package"));
                     productList.add(two);
                 }
         	conn.close();
@@ -323,7 +325,7 @@ public class MySqlDBSalesOrderDAO implements SalesOrderDAO{
                     SO.setDate_issued(rs.getDate("date_issued"));
                     SO.setOrder_date(rs.getDate("order_date"));
                     SO.setDate_delivered(rs.getDate("date_delivered"));
-                    SO.setStatusCode(rs.getString("statusCode"));
+                    SO.setStatusCode(rs.getString("statusDesc"));
                     SO.setStock_status(rs.getString("stockStatus"));
                     orderList.add(SO);
                 }

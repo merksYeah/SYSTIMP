@@ -61,7 +61,7 @@ public class CreateReqSlip extends HttpServlet {
            order.setProducts(Products);
            order.setQuantity(Quantity);
            poDB.addProducts(order);
-           response.sendRedirect("/CHEMRES/ToReqSlip");
+           response.sendRedirect("ToReqSlip");
         }
     }
 

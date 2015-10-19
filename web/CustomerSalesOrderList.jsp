@@ -12,7 +12,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Dashboard">
-    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
     <title>CRIPSI</title>
 
@@ -38,12 +37,13 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-          	<h3><i class="fa fa-angle-right"></i> Customer Sales Order</h3>
           	
           	<!-- BASIC FORM ELELEMNTS -->
           	<div class="row mt">
           		<div class="col-lg-12">
-                  <div class="form-panel">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading"><h3>Customer Sales Orders</h3></div>
+                  <div class="panel-body">
 		   <div class="row mt">
                   <div class="col-md-12">
                           <table id = "what" class="table table-bordered table-striped table-condensed">
@@ -69,7 +69,23 @@
                                           <td><c:out value="${SalesOrder.date_issued}"/></td>
                                           <td><c:out value="${SalesOrder.order_date}"/></td>
                                           <td><c:out value="${SalesOrder.date_delivered}"/></td>
-                                          <td><c:out value="${SalesOrder.statusCode}"/></td>
+                                            <c:choose>
+                                    <c:when test="${SalesOrder.statusCode eq 'In Process For Delivery'}">
+                                        <td><span class="label label-info">IN PROCESS FOR DELIVERY</span></td>
+                                    </c:when>
+                                      <c:when test="${SalesOrder.statusCode eq 'Delivered'}">
+                                        <td><span class="label label-success">DELIVERED</span></td>
+                                    </c:when>
+                                    <c:when test="${SalesOrder.statusCode eq 'For Reordering'}">
+                                        <td><span class="label label-warning">FOR REORDERING</span></td>
+                                    </c:when>
+                                     <c:when test="${SalesOrder.statusCode eq 'Pending for Approval'}">
+                                        <td><span class="label label-default">PENDING FOR APPROVAL</span></td>
+                                    </c:when>
+                                    <c:otherwise>
+                                       <td><span class="label label-danger">CANCELED</span></td>
+                                    </c:otherwise>
+                                    </c:choose>
                                           
                                   </tr>
                                   </c:forEach>
@@ -89,7 +105,7 @@
                   </div>
           		</div><!-- col-lg-12-->      	
           	</div><!-- /row -->
-          		
+                </div>
 		</section><! --/wrapper -->
       </section><!-- /MAIN CONTENT -->
 
@@ -124,7 +140,9 @@
 	<script src="assets/DataTables-1.10.6/media/js/jquery.dataTables.min.js"></script>
         <script>
         $(document).ready( function () {
-    $('#what').DataTable();
+     var table = $('#what').dataTable({
+       "order":[[3,"desc"]]
+   });
     } );
     </script>
 	<script src="assets/js/form-component.js"></script>    

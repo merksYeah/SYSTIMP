@@ -43,7 +43,7 @@
 					   
                           
                            <li>
-						  <a  href="ToFilterCustomerSalesOrders ">
+						  <a  href="FilterSalesOrders">
 						  <i class="fa fa-file-o"></i>
 							<span>Sales Order List</span>
 						</a>

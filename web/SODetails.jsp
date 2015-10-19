@@ -38,12 +38,13 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-          	<h3><i class="fa fa-angle-right"></i> Order Details</h3>
           	
           	<!-- BASIC FORM ELELEMNTS -->
           	<div class="row mt">
           		<div class="col-lg-12">
-                  <div class="form-panel">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading"><h3>Order Details</h3></div>
+                  <div class="panel-body">
 		   <div class="row mt">
                   <div class="col-md-12">
                           <table id = "what" class="table table-bordered table-striped table-condensed">
@@ -61,7 +62,7 @@
                                    <c:forEach items="${products}" var="product">
                                    <tr>
                                           <td><c:out value="${product.productName}"/></td>
-                                          <td><c:out value="${product.quantity}"/></td>
+                                          <td><c:out value="${product.quantity}"/> <c:out value="${product.packageType}"/></td>
                                   </tr>
                                   </c:forEach>
                                   
@@ -80,7 +81,7 @@
                   </div>
           		</div><!-- col-lg-12-->      	
           	</div><!-- /row -->
-          		
+                </div>
 		</section><! --/wrapper -->
       </section><!-- /MAIN CONTENT -->
 

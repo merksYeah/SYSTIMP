@@ -41,8 +41,8 @@ public class ShowOrderDetails extends HttpServlet {
             SalesOrder so = new SalesOrder();
            so.setOrder_id(Integer.parseInt(request.getParameter("orderid")));
            DAOFactory db = DAOFactory.getDAOFactory(1);
-           SalesOrderDAO db1 = db.getSalesOrderDAO();
-           ArrayList<Product> products = db1.getOrderDetailsByOrder(so);
+           SalesOrderDAO salesDB = db.getSalesOrderDAO();
+           ArrayList<Product> products = salesDB.getOrderDetailsByOrder(so);
            request.setAttribute("products",products);
            request.setAttribute("order",so);
            rd = request.getRequestDispatcher("SODetails.jsp");  

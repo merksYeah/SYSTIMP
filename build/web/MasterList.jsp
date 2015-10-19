@@ -63,7 +63,7 @@
                                   <th class="hidden-phone"><i class="fa fa-truck"></i> Customer Name</th>
                                   <th class="hidden-phone"><i class="fa fa-truck"></i> Deliver To</th>
                                   <th><i class="fa fa-calendar"></i> Date Issued</th>
-                                  <th><i class=" fa fa-calendar"></i> Order Date</th>
+                                  <th><i class=" fa fa-calendar"></i> Specified Delivery Date</th>
                                   <th><i class=" fa fa-calendar"></i> Delivery Date</th>
                                    <th><i class=" fa fa-calendar"></i> Status</th>
                                   

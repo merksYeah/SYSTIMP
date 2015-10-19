@@ -35,10 +35,10 @@ class MySqlDBProductDAO implements ProductDAO{
                                                                 "				   join product p on sp.productCode = p.productCode\n" +
                                                                 "where year(date_issued) = year(?) and month(date_issued) = month(?)\n" +
                                                                 "group by p.productCode";
-    private static final String SQL_GET_MONTHLY_INVENTORY_REPORT = "SELECT d.package,d.productName,d.productCode,sum(orderquantity) as prodIn , prodOut FROM mydb.salesorder_has_product sp \n" +
+    private static final String SQL_GET_MONTHLY_INVENTORY_REPORT = "SELECT d.package,d.productName,d.productCode,sum(orderquantity) as prodIn , IFNULL(prodOut,0) as prodOut FROM mydb.salesorder_has_product sp \n" +
                                                                     "		 join salesorder s on s.salesorderid = sp.SalesOrderId\n" +
                                                                     "         join product d on d.productCode = sp.productCode\n" +
-                                                                    "         join(SELECT d.productCode,sum(orderquantity) as prodOut FROM mydb.product_has_purchaseorder pp\n" +
+                                                                    "         left join(SELECT d.productCode,sum(orderquantity) as prodOut FROM mydb.product_has_purchaseorder pp\n" +
                                                                     "				join purchaseorder p on p.purchaseOrderId= pp.purchaseOrderId\n" +
                                                                     "                join product d on pp.productCode = d.productCode\n" +
                                                                     "				where MONTH(dateDelivered) = MONTH(NOW())) m on m.productCode = sp.productCode\n" +
