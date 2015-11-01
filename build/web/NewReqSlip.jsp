@@ -90,11 +90,11 @@
                                                             <tbody>
                                                                 <c:forEach items="${products}" var="product" varStatus="status">
                                                                     <tr>
-                                                                        <td><input type="checkbox" name="checkedRows" value="${product.productCode}" onclick="var input = document.getElementById('<c:out value="${status.count}" />'); if(this.checked){ input.disabled = false; input.focus();}else{input.disabled=true;}"></td>
-                                                                        <td><input type="number" name="orderquantity" id = "<c:out value="${status.count}" />"disabled/></td>
-                                                                    
-                                                                        <td><c:out value="${product.productName}"/></td> 
-                                                                        <td><c:out value="${product.packageType}"/></td> 
+                                                                         <td><input type="checkbox" name="checkedRows" value="${product.productCode}" onclick="var input = document.getElementById('<c:out value="${status.count}" />'); if(this.checked){ input.disabled = false; input.focus();}else{input.disabled=true;}"></td>
+                                                                        <td class="quantity"><input type="number" name="orderquantity" id = "<c:out value="${status.count}" />"disabled/></td>
+                                                                   
+                                                                        <td class="prodName"><c:out value="${product.productName}"/></td> 
+                                                                        <td class="packageType"><c:out value="${product.packageType}"/></td> 
                                                                         <td><c:out value="${product.netweight}"/></td> 
                                                                         <td><c:out value="${product.quantity}"/></td>
                                                                        
@@ -104,7 +104,7 @@
                                         </table>
                                           <div class ="form-group" >
                                             <div class="col-lg-12">
-                                                <button data-target="#confirm" data-toggle="modal" type = "button" class="btn btn-round btn-theme center-block">
+                                                <button id="proceed" data-target="#confirm" data-toggle="modal" type = "button" class="btn btn-round btn-theme center-block">
                                                 Proceed
                                                 </button>
                                              </div>
@@ -120,34 +120,51 @@
       <!--main content end-->
       
   </section>
-                             <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="confirm" class="modal fade">
+                            
+                                        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="confirm" class="modal fade">
 		              <div class="modal-dialog">
 		                  <div class="modal-content">
 		                      <div class="modal-header">
 		                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		                          <h4 class="modal-title">Proceed to Submitting</h4>
+		                          <h4 class="modal-title">Preview Order Information</h4>
 		                      </div>
 		                      <div class="modal-body">
 		                          <p id="message">Is the information entered below correct?</p>
+                                          <table id = "orderPreview"class="table table-bordered table-striped table-condensed">
+                                              <thead>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                              </thead>
+                                              <tbody>
+                                                  
+                                              </tbody>
+                                              <tfoot>
+                                                  <tr>
+                                                      <th>Order Date:</th>
+                                                      <th id="Date"></th>
+                                                  </tr>
+ 
+                                              </tfoot>
+                                          </table>
 		                      </div>
 		                      <div class="modal-footer">
 		                          <button id="cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-		                          <button id="submit" type = "submit" class="btn btn-round btn-theme">
+		                          <button id="submit" type = "button" class="btn btn-round btn-theme">
                                                 Submit
                                           </button>
 		                      </div>
 		                  </div>
 		              </div>
-		          </div>
-                          <div aria-hidden="true" aria-labelledby="myModalLabel2" role="dialog" tabindex="-1" id="message2" class="modal fade">
+		          </div>   
+      <div aria-hidden="true" aria-labelledby="myModalLabel2" role="dialog" tabindex="-1" id="message2" class="modal fade">
 		              <div class="modal-dialog">
 		                  <div class="modal-content">
 		                      <div class="modal-header">
 		                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		                          <h4 class="modal-title">MESSAGE</h4>
+		                          <h4 id="msgHeader" class="modal-title">MESSAGE</h4>
 		                      </div>
-		                      <div class="modal-body">
-		                          <p >${message}</p>
+		                      <div  class="modal-body">
+		                          <p id ="endMessage"></p>
 		                      </div>
 		                     
 		                  </div>
@@ -177,18 +194,25 @@
       }
      
       else{
-          $('#create').submit();
+          $.ajax({
+            method: "POST",
+            url: $("#create").attr('action'),
+            data: $("#create").serialize()
+            })
+            .done(function(  ) {
+               $('#confirm').modal('hide'); 
+               $('#msgHeader').text("SUCCESSFUL");
+               $("#endMessage").text("ORDER CREATED SUCESSFULLY!");
+               $("#message2").modal('show');
+               $('#create').trigger("reset");
+               $("input[type=number]").prop('disabled', true);
+            });
           return true;
       }
       
   });
     
-     var jsAtt = '${message}';
-            if(jsAtt !== ''){
-            $(window).load(function(){
-            $('#message2').modal('show');
-             });    
-            }
+     
     
   $(document).ready(function() {
     $('#what').dataTable( {
@@ -199,6 +223,20 @@
          "order":[[2,"asc"]]
        
     } );
+    $('#proceed').click(function(){
+        $("#orderPreview tbody").children().remove();
+         $("#Date").text($("input[name=orderdate]").val());
+           $("#Terms").text( $("input[name=inlineRadioOptions]:checked").parent("label").text());
+            $("#devAdd").text( $("select[name=address]").val());
+       $("input[type=checkbox]:checked").each(function() {
+           var selector = $(this).parent("td");
+           var prod = selector.siblings("td.prodName").text(); 
+           var quantity = selector.siblings("td.quantity").children().val();
+           var package = selector.siblings("td.packageType").text();
+           $("#orderPreview tbody").append("<tr><td>"+prod+"</td><td>"+quantity+" " + package+ "</td></tr>");
+          
+        });
+   });
 } );
 
     </script>
@@ -215,7 +253,7 @@
   <script>
   $(document).ready(function() {
     $('#datepicker').datepicker({
-		minDate: 0,						
+		minDate: 4,						
         beforeShowDay: noSunday
       });
 

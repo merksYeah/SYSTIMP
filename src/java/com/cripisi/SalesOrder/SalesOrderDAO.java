@@ -55,12 +55,15 @@ public interface SalesOrderDAO {
       public ArrayList<SalesOrder> getNonDeliveredOrdersSalesAgent(SalesOrder so, Employee emp);
     
      public ArrayList<SalesOrder> getDeliveredOrders(SalesOrder so, Customer cust);
+      public ArrayList<SalesOrder> getDeliveredOrdersSalesAgent(SalesOrder so, Employee emp);
      
      public OrderList getOrderList(Customer cust);
      
      public OrderList getOrderListSalesAgent(Employee emp);
      
      public boolean checkSufficiency(SalesOrder so);
+     
+     public SalesOrder getOrderById(SalesOrder so);
      
      public ArrayList<barchart> getMonthlyRevenue(Employee emp);
      public ArrayList<barchart> getMonthlyRevenueBreakdown(Employee emp);

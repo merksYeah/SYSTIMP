@@ -56,6 +56,7 @@
                               <tr>
                                   <th><i class="fa fa-barcode"></i> Prouduct Name</th>
                                   <th class="hidden-phone"><i class="fa fa-truck"></i> Order Quantity</th>
+                                  <th class="hidden-phone"><i class="fa fa-truck"></i> Price Each</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -63,11 +64,16 @@
                                    <tr>
                                           <td><c:out value="${product.productName}"/></td>
                                           <td><c:out value="${product.quantity}"/> <c:out value="${product.packageType}"/></td>
+                                          <td><c:out value="${product.MSRP}"/></td>
                                   </tr>
                                   </c:forEach>
                                   
                             
                               </tbody>
+                              <tfoot>
+                              <th>Comments</th>
+                              <th><c:out value="${order.comments}"/></th>
+                              </tfoot>
                           </table>
 				<input class ="btn btn-round center-block btn-theme" type="button" value="Back" onclick="javascript:history.go(-1)">		  
                      

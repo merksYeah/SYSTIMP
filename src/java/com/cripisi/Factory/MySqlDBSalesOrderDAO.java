@@ -40,7 +40,7 @@ public class MySqlDBSalesOrderDAO implements SalesOrderDAO{
     private static final String SQL_GET_SALESAGENT_ORDERS ="SELECT * FROM salesorder so\n" +
                                                             "join customer cs on cs.customerTin = so.customer_tin\n" +
                                                             "where EmployeeId = ?";
-    private static final String SQL_GET_ORDER_ORDERDETAILS ="SELECT package,productName,orderQuantity ,quantity FROM salesorder_has_product sp join product p on sp.productCode = p.productCode where SalesOrderId = ?";
+    private static final String SQL_GET_ORDER_ORDERDETAILS ="SELECT priceEach,package,productName,orderQuantity ,quantity FROM salesorder_has_product sp join product p on sp.productCode = p.productCode where SalesOrderId = ?";
     private static final String SQL_GET_PRODUCT_SALES = "select * from productssoldpermonth\n" +
                                                         "where month = ? and year = ? LIMIT 8";
     private static final String SQL_GET_INPROCESS_ORDERS = "SELECT * from salesorder where statuscode = ?";
@@ -62,6 +62,7 @@ public class MySqlDBSalesOrderDAO implements SalesOrderDAO{
     private static final String SQL_GET_CURRENT_ORDERS = "SELECT * from salesorder s join orderstatus o on s.statusCode = o.statusCode where s.statuscode = ? and customer_tin = ? and DATE(date_issued) = DATE(NOW()) order by date_issued desc";
      private static final String SQL_GET_CURRENT_ORDERS_SALESAGENT = "SELECT * from salesorder s join orderstatus o on s.statusCode = o.statusCode join customer c on s.customer_tin = c.customerTin where s.statuscode = ? and employeeID = ? and DATE(date_issued) = DATE(NOW()) order by date_issued desc";
      private static final String SQL_GET_CURRENT_DELIVEREDORDERS = "SELECT * from salesorder s join orderstatus o on s.statusCode = o.statusCode where s.statuscode = ?  and customer_tin = ? and DATE(date_delivered) = DATE(NOW()) order by date_delivered desc";
+     private static final String SQL_GET_CURRENT_DELIVEREDORDERS_SALESAGENT = "SELECT * from salesorder s join orderstatus o on s.statusCode = o.statusCode join customer c on s.customer_tin = c.customerTin where s.statuscode = ? and employeeID = ? and DATE(date_delivered) = DATE(NOW()) order by date_delivered desc";
      private static final String SQL_ORDERLIST_NUMBERS_CUSTOMER = "Select 	SUM(statusCode = 'D') AS DELIVERED,\n" +
                                                                         "		SUM(statusCode = 'I') AS INPROCESS, SUM(statusCode ='R') AS REORDERING, SUM(statusCode='C') as CANCELED\n" +
                                                                         "        from salesorder\n" +
@@ -92,6 +93,8 @@ public class MySqlDBSalesOrderDAO implements SalesOrderDAO{
 "    where YEAR(date_delivered) = Year(now()) and employeeId = ?\n" +
 "    group by salesorderid\n" +
 "    order by month";
+    private static final String SQL_GET_ORDER_BYID  = "select * from salesorder where salesorderid = ?";
+    
      @Override
     public ArrayList<Product> getOrderedProducts(SalesOrder so){
         ResultSet rs = null;
@@ -290,6 +293,7 @@ public class MySqlDBSalesOrderDAO implements SalesOrderDAO{
                     two.setQuantity(rs.getInt("orderQuantity"));
                     two.setFulfilledQuantity(rs.getInt("quantity"));
                     two.setPackageType(rs.getString("package"));
+                    two.setMSRP(rs.getDouble("priceEach"));
                     productList.add(two);
                 }
         	conn.close();
@@ -597,6 +601,34 @@ public class MySqlDBSalesOrderDAO implements SalesOrderDAO{
             }
            return orderList;
     }
+    
+     @Override
+    public ArrayList<SalesOrder> getDeliveredOrdersSalesAgent(SalesOrder so, Employee emp) {
+         ResultSet rs = null;
+         ArrayList<SalesOrder> orderList = new ArrayList<SalesOrder>();
+          Connection conn = MySqlDbDAOFactory.createConnection();
+           try {            
+             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_CURRENT_DELIVEREDORDERS_SALESAGENT );
+                    pstmt.setString(1, so.getStatusCode());
+                    pstmt.setString(2, emp.getEmployeeId());
+               	rs = pstmt.executeQuery();
+                while(rs.next()){
+                    SalesOrder so2 = new SalesOrder();
+                    so2.setOrder_id(rs.getInt("SalesOrderId"));
+                    so2.setDeliver_to(rs.getString("deliver_to"));
+                    so2.setDate_issued(rs.getDate("date_issued"));
+                    so2.setOrder_date(rs.getDate("order_date"));
+                    so2.setDate_delivered(rs.getDate("date_delivered"));
+                    so2.setStatusCode(rs.getString("statusDesc"));
+                    orderList.add(so2);
+                }
+        	 conn.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(MySqlDBSalesOrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           return orderList;
+    }
 
     @Override
     public OrderList getOrderList(Customer cust) {
@@ -790,6 +822,28 @@ public class MySqlDBSalesOrderDAO implements SalesOrderDAO{
                 Logger.getLogger(MySqlDBSalesOrderDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
            return orderList;
+    }
+
+    @Override
+    public SalesOrder getOrderById(SalesOrder so) {
+       ResultSet rs = null;
+          Connection conn = MySqlDbDAOFactory.createConnection();
+          SalesOrder so2 = new SalesOrder();
+           try {            
+             PreparedStatement pstmt = conn.prepareStatement(SQL_GET_ORDER_BYID );
+                  pstmt.setInt(1, so.getOrder_id());
+               	rs = pstmt.executeQuery();
+                while(rs.next()){
+                    so2.setOrder_id(so.getOrder_id());
+                    so2.setComments(rs.getString("comments"));
+                }
+        	 conn.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(MySqlDBSalesOrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           return so2;
+       
     }
     
     

@@ -182,6 +182,7 @@
                                                   </tr>
                                               </tfoot>
                                           </table>
+                                          
 		                      </div>
 		                      <div class="modal-footer">
 		                          <button id="cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
@@ -289,7 +290,7 @@
   <script>
   $(document).ready(function() {
     $('#datepicker').datepicker({
-		minDate: 0,						
+		minDate: 4,						
         beforeShowDay: noSunday
       });
 

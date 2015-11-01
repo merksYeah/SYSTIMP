@@ -46,30 +46,7 @@
                   <div class="panel-body">
 		   <div class="row mt">
                   <div class="col-md-12">
-                      <form id="filters" class="form-horizontal style-form">
-                      <div class="form-group">
-                              <label class="col-lg-2 col-sm-2 control-label">Status Filter</label>
-                                <div class="col-lg-2">
-                                    <select id="wut" class="form-control" required>
-                                    <option>Select Status</option>
-                                    <option value="A">Approved</option>
-                                    <option value="C">Canceled</option>
-                                    <option value="F">Fulfilled</option>
-                                  </select>
-                                </div>
-                          </div>
-                          <div class="form-group">
-                              <label class="col-lg-2 col-sm-2 control-label">Status Filter</label>
-                                <div class="col-lg-2">
-                                    <select id="wut2" class="form-control" required>
-                                    <option>Select Customer</option>
-                                    <option value="POGIKO">Approved</option>
-                                    <option value="C">Canceled</option>
-                                    <option value="F">Fulfilled</option>
-                                  </select>
-                                </div>
-                          </div>
-                      </form>
+                    
                           <table id = "what" class="table table-bordered table-striped table-condensed">
 	                  	  	  <h4><i class="fa fa-angle-right"></i> Orders</h4>
 	                  	  	  <hr>

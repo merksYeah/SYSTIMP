@@ -41,6 +41,7 @@ public class UpdatePendingOrders extends HttpServlet {
             String[] orders = request.getParameterValues("radio");
             so.setOrder_id(Integer.parseInt(orders[0]));
             so.setOrderIds(orders);
+            so.setComments(request.getParameter("comments"));
             so.setStatusCode(request.getParameter("inlineRadioOptions"));
             salesDB.updateSalesOrder(so);
             
@@ -51,6 +52,7 @@ public class UpdatePendingOrders extends HttpServlet {
             so.setPrices(prices);
             salesDB.updateProductPriceModel(so);
             }
+            salesDB.updateSalesOrderComments(so);
             
         }
     }

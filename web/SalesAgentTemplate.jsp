@@ -26,7 +26,7 @@
                           <li>
 							  <a  href="ToPendingClientOrders">
 								<i class="fa fa-file-o"></i>
-								<span>Pending For Approval SO</span>
+								<span>Pending Sales Orders</span>
 							  </a>
 						  </li>
                           

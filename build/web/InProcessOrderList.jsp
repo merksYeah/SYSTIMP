@@ -86,6 +86,12 @@
                             
                               </tbody>
                           </table>
+                           <div class ="form-group" >
+                                <label class="col-lg-2 col-sm-2 control-label">Comments</label>
+                                <div class="col-lg-5">
+                                    <textarea name ="comments" class="form-control"></textarea>
+                                </div>
+                             </div>
                           <div class ="form-group" >
                             <div class="col-lg-12">
                                   <button id="proceed" data-target="#confirm" data-toggle="modal" type = "button" class="btn btn-round btn-theme center-block">

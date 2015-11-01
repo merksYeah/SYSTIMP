@@ -43,6 +43,7 @@ public class ShowOrderDetails extends HttpServlet {
            DAOFactory db = DAOFactory.getDAOFactory(1);
            SalesOrderDAO salesDB = db.getSalesOrderDAO();
            ArrayList<Product> products = salesDB.getOrderDetailsByOrder(so);
+           so = salesDB.getOrderById(so);
            request.setAttribute("products",products);
            request.setAttribute("order",so);
            rd = request.getRequestDispatcher("SODetails.jsp");  

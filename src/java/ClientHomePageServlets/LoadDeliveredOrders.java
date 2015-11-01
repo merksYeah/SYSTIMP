@@ -7,6 +7,8 @@ package ClientHomePageServlets;
 
 import com.cripisi.Customer.Customer;
 import com.cripisi.Customer.CustomerDAO;
+import com.cripisi.Employee.Employee;
+import com.cripisi.Employee.EmployeeDAO;
 import com.cripisi.Factory.DAOFactory;
 import com.cripisi.SalesOrder.SalesOrder;
 import com.cripisi.SalesOrder.SalesOrderDAO;
@@ -45,13 +47,24 @@ public class LoadDeliveredOrders extends HttpServlet {
            SalesOrderDAO salesDB = db.getSalesOrderDAO();
             HttpSession session = request.getSession();
             HashMap<String,Integer> rights = (HashMap<String,Integer>) session.getAttribute("login");
-            Customer cust = new Customer();
-            cust.setUserId(rights.get("userId"));
-              CustomerDAO customerDB = db.getCustomerDAO();
-            cust = customerDB.getCustomerOrderDetails(cust);
-           SalesOrder so = new SalesOrder();
-           so.setStatusCode(request.getParameter("orderstatus"));
-           ArrayList<SalesOrder> orders = salesDB.getDeliveredOrders(so,cust);
+            ArrayList<SalesOrder> orders = new ArrayList<>();
+            SalesOrder so = new SalesOrder();
+            so.setStatusCode(request.getParameter("orderstatus"));
+            if(rights.get("role") == 1){
+                Customer cust = new Customer();
+                cust.setUserId(rights.get("userId"));
+                CustomerDAO customerDB = db.getCustomerDAO();
+                cust = customerDB.getCustomerOrderDetails(cust);
+                orders = salesDB.getDeliveredOrders(so,cust);
+            }
+            else if(rights.get("role") == 3){
+                Employee emp = new Employee();
+                emp.setUserId(rights.get("userId"));
+                EmployeeDAO empDB = db.getEmployeeDAO();
+                emp = empDB.getEmployeeById(emp);
+                orders = salesDB.getDeliveredOrdersSalesAgent(so,emp);
+            }
+            
            //String json = null;
             String json =new Gson().toJson(orders);  
             System.out.println(json);

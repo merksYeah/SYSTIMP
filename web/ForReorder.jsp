@@ -162,13 +162,6 @@
 		                      <div class="modal-body">
 		                          <p class="block-text" id="doneMessage"></p>
 		                      </div>
-                                      
-		                      <div class="modal-footer">
-		                          <button id="cancel" data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-		                          <button id="submit" type = "button" class="update btn btn-round btn-theme">
-                                                Submit
-                                          </button>
-		                      </div>
 		              </div>
 		          </div>
    </div>
@@ -264,14 +257,21 @@
                 if(action === 'C'){
                     $("#statusMessage").modal("hide");
                     $("#doneHeader").text("CANCELLING: ORDER# " + orderId);
-                    $("#donedMessage").text("Are you sure you want to cancel order " + orderId + "?");
+                    $("#doneMessage").text("Are you sure you want to cancel order " + orderId + "?");
                     $("#doneModal").modal("show");
+                     var row = table.row($("input[name=radio]:checked").parent().parent());
+                     row.remove();
+                    table.draw();   
                 }
                 else{
-                    $("#deliveryTitle").modal("hide");
+                    $("#deliveryDate").modal("hide");
                     $("#doneHeader").text("UPDATED DELIVERY DATE: ORDER# " + orderId);
                     $("#doneMessage").text("Successfully updated delivery date of order#" + orderId + " and is now in process for delivery");
                      $("#doneModal").modal("show");
+                     var row = table.row($("input[name=radio]:checked").parent().parent());
+                     row.remove();
+                    table.draw();   
+                     $("#create").trigger("reset");
                 }
                
             });

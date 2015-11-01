@@ -37,11 +37,14 @@ public class UpdateDeliveredOrders extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             RequestDispatcher rd = null;
              DAOFactory dbFact = DAOFactory.getDAOFactory(1);
-            SalesOrderDAO soDB = dbFact.getSalesOrderDAO();
+            SalesOrderDAO salesDB = dbFact.getSalesOrderDAO();
             SalesOrder so = new SalesOrder();
+            so.setComments(request.getParameter("comments"));
             so.setOrderIds(request.getParameterValues("radios"));
+            so.setOrder_id(Integer.parseInt(request.getParameter("radios")));
             so.setStatusCode("D");
-            soDB.updateSalesOrder(so);
+            salesDB.updateSalesOrder(so);
+            salesDB.updateSalesOrderComments(so);
         }
     }
 

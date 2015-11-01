@@ -116,7 +116,13 @@
                                         <span id="optionmessage" class="help-block">
                                         </span>
                                     </div>
-                            </div>	 
+                            </div>
+                           <div class ="form-group" >
+                                <label class="col-lg-2 col-sm-2 control-label">Comments</label>
+                                <div class="col-lg-5">
+                                    <textarea name = "comments" class="form-control"></textarea>
+                                </div>
+                             </div>
                           <div class ="form-group" >
                                             <div class="col-lg-12">
                                                 <button id="proceed" type = "button" class="btn btn-round btn-theme center-block">
@@ -173,7 +179,9 @@
 		                      </div>
 		                      <div class="modal-body">
 		                          <p class="block-text" id="statusmessage"></p>
+                                          
 		                      </div>
+                                      
                            
 		              </div>
 		          </div>
